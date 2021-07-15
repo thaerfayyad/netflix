@@ -10,7 +10,11 @@ class RoleController extends Controller
 {
     public function index()
     {
-        $roles = role::WhereRolesNot(['super_admin','user','admin'])->WhenSearch(request()->search)->paginate(5);
+        $roles = role::WhereRoleNot(['super_admin','user','admin'])
+            ->WhenSearch(request()->search)
+            ->with('permissions')
+            ->withCount('users')
+            ->paginate(5);
         return view('admin.role.index',compact('roles'));
     }
 
@@ -29,44 +33,21 @@ class RoleController extends Controller
         ]);
        // dd($request->permissions);
         $role = Role::create($request->all());
-        $role ->name = $request->name;
         $role -> attachPermissions($request->permissions);
-
-        $role->save();
         session()->flash('success',('the role added successfully'));
         return redirect()->route('admin.roles.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
+
     public function edit(role $role)
     {
 
         return view('admin.role.edit',compact('role'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, role $role)
     {
 
@@ -81,12 +62,6 @@ class RoleController extends Controller
         return redirect()->route('admin.roles.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(role $role)
     {
 

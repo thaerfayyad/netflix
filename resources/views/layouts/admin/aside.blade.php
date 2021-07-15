@@ -9,8 +9,16 @@
     </div>
     <ul class="app-menu">
         <li><a class="app-menu__item " href="{{route('admin.welcome.index')}}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a></li>
-        <li><a class="app-menu__item " href="{{route('admin.categories.index')}}"><i class="app-menu__icon fa fa-list"></i><span class="app-menu__label">Category</span></a></li>
-        <li><a class="app-menu__item " href="{{route('admin.roles.index')}}"><i class="app-menu__icon fa fa-anchor"></i><span class="app-menu__label">Roles</span></a></li>
+        @if(auth()->user()->hasPermission('categories_read'))
+            <li><a class="app-menu__item " href="{{route('admin.categories.index')}}"><i class="app-menu__icon fa fa-list"></i><span class="app-menu__label">Category</span></a></li>
+
+        @endif
+        @if(auth()->user()->hasPermission('roles_read'))
+            <li><a class="app-menu__item " href="{{route('admin.roles.index')}}"><i class="app-menu__icon fa fa-anchor"></i><span class="app-menu__label">Roles</span></a></li>
+       @endif
+        @if(auth()->user()->hasPermission('users_read'))
+            <li><a class="app-menu__item " href="{{route('admin.users.index')}}"><i class="app-menu__icon fa fa-users"></i><span class="app-menu__label">Users</span></a></li>
+        @endif
 
 
 {{--        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label"></span><i class="treeview-indicator fa fa-angle-right"></i></a>--}}

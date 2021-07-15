@@ -17,7 +17,11 @@
                         </div>
                         <div class="col-md-4">
                             <button type="submit" class="btn btn-primary"> <i class="fa fa-search"></i>Search</button>
-                            <a href="{{route('admin.roles.create')}}" class="btn btn-primary"><i class="fa fa-plus"></i>Add</a>
+                        @if(auth()->user()->hasPermission('roles_create'))
+                                <a href="{{route('admin.roles.create')}}" class="btn btn-primary"><i class="fa fa-plus"></i>Add</a>
+                        @else
+                                <a href="#" disabled class="btn btn-primary"><i class="fa fa-plus"></i>Add</a>
+                        @endif
                         </div>
                     </div>
                 </form>
@@ -32,6 +36,8 @@
                 <tr>
                     <th>#</th>
                     <th>Name</th>
+                    <th>Permissions</th>
+                    <th>Users Count</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -42,13 +48,34 @@
                                <td>{{$loop->iteration}}</td>
                                <td>{{$role->name}}</td>
                                <td>
-                                   <a href="{{route('admin.roles.edit',$role->id)}}" class="btn btn-warning btn-sm"> <i class="fa fa-edit"></i>Edit</a>
-                                   <form method="POST" action="{{route('admin.roles.destroy', $role->id)}}" style="display: inline-block;">
-                                       @csrf
-                                       @method('delete')
-                                       <button type="submit" class="btn btn-danger btn-sm delete"><i class="fa fa-trash"></i>Delete</button>
-                                   </form>
+                                   @foreach($role->permissions as $permission)
+                                       <h5 style="display: inline-block">
+                                           <span class="badge badge-primary">{{$permission->name}}</span>
+                                       </h5>
+                                   @endforeach
                                </td>
+                               <td>
+                                   <span class="badge badge-info">
+                                       {{$role->users_count}}
+                                   </span>
+                               </td>
+                               <td>
+                                   @if(auth()->user()->hasPermission('roles_update'))
+                                       <a href="{{route('admin.roles.edit',$role->id)}}" class="btn btn-warning btn-sm"> <i class="fa fa-edit"></i>Edit</a>
+
+                                   @else
+                                       <a href="#" disabled class="btn btn-warning btn-sm"> <i class="fa fa-edit"></i>Edit</a>
+                                   @endif
+                                   @if(auth()->user()->hasPermission('roles_delete'))
+                                       <form method="POST" action="{{route('admin.roles.destroy', $role->id)}}" style="display: inline-block;">
+                                           @csrf
+                                           @method('delete')
+                                           <button type="submit" class="btn btn-danger btn-sm delete"><i class="fa fa-trash"></i>Delete</button>
+                                       </form>
+                                   @else
+                                           <a href="#" disabled class="btn btn-danger btn-sm "><i  class="fa fa-trash"></i>Delete</a>
+                                   @endif
+                           </td>
                            </tr>
                         @endforeach
                      </tboody>

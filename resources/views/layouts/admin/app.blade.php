@@ -10,6 +10,9 @@
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 {{--  Noty Notifications--}}
+//Jquery
+
+    <script src="{{asset('admin/js/jquery-3.3.1.min.js')}}"></script>
 
     <link rel="stylesheet" href="{{ asset('admin/plugins/noty.css') }}">
     <script src="{{ asset('admin/plugins/noty.js') }}"></script>
@@ -28,12 +31,12 @@
 
 </main>
 <!-- Essential javascripts for application to work-->
-<script src="{{asset('admin/js/jquery-3.3.1.min.js')}}"></script>
+
 <script src="{{asset('admin/js/popper.min.js')}}"></script>
 <script src="{{asset('admin/js/bootstrap.min.js')}}"></script>
 
 //select2
-<script src="{{asset('admin/plugins/select2/select2.min.js')}}"></script>
+<script src="{{asset('admin/js/plugins/select2.min.js')}}"></script>
 <script src="{{asset('admin/js/main.js')}}"></script>
 <script>
     $(document).ready(function (){

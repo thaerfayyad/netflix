@@ -17,7 +17,12 @@
                         </div>
                         <div class="col-md-4">
                             <button type="submit" class="btn btn-primary"> <i class="fa fa-search"></i>Search</button>
-                            <a href="{{route('admin.categories.create')}}" class="btn btn-primary"><i class="fa fa-plus"></i>Add</a>
+                            @if(auth()->user()->hasPermission('categories_create'))
+                                <a href="{{route('admin.categories.create')}}" class="btn btn-primary"><i class="fa fa-plus"></i>Add</a>
+                            @else
+                                <a href="#" class="btn btn-primary disabled"><i class="fa fa-plus "></i>Add</a>
+                            @endif
+
                         </div>
                     </div>
                 </form>
@@ -42,12 +47,21 @@
                                <td>{{$loop->iteration}}</td>
                                <td>{{$category->name}}</td>
                                <td>
-                                   <a href="{{route('admin.categories.edit',$category->id)}}" class="btn btn-warning btn-sm"> <i class="fa fa-edit"></i>Edit</a>
-                                   <form method="POST" action="{{route('admin.categories.destroy', $category->id)}}" style="display: inline-block;">
-                                       @csrf
-                                       @method('delete')
-                                       <button type="submit" class="btn btn-danger btn-sm delete"><i class="fa fa-trash"></i>Delete</button>
-                                   </form>
+                                   @if(auth()->user()->hasPermission('categories_update'))
+                                       <a href="{{route('admin.categories.edit',$category->id)}}" class="btn btn-warning btn-sm"> <i class="fa fa-edit"></i>Edit</a>
+                                   @else
+                                       <a href="#" disabled class="btn btn-warning btn-sm"> <i class="fa fa-edit"></i>Edit</a>
+                                   @endif
+                                       @if(auth()->user()->hasPermission('categories_delete'))
+                                           <form method="POST" action="{{route('admin.categories.destroy', $category->id)}}" style="display: inline-block;">
+                                               @csrf
+                                               @method('delete')
+                                               <button type="submit" class="btn btn-danger btn-sm delete"><i class="fa fa-trash"></i>Delete</button>
+                                           </form>
+                                       @else
+                                           <a href="#" disabled class="btn btn-danger btn-sm "><i  class="fa fa-trash"></i>Delete</a>
+                                       @endif
+
                                </td>
                            </tr>
                         @endforeach

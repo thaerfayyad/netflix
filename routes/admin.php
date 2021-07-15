@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
        // Categories Routes
        Route::resource('categories',\App\Http\Controllers\Admin\CategoryController::class)->except(['show']);
        //Role Routes
-       Route::resource('roles',\App\Http\Controllers\Admin\RoleController::class);
+       Route::resource('roles',\App\Http\Controllers\Admin\RoleController::class)->except(['show']);
+       Route::resource('users',\App\Http\Controllers\Admin\UserController::class)->except(['show']);
 
     });
